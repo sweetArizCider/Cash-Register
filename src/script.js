@@ -40,62 +40,55 @@ window.onload = function() {
     }
   }
 
-const giveChange = (change) => {
-    let changeDetails = []; 
-    let initialChange = change;
+  const giveChange = (change) => {
+    let changeDetails = [];
     let sumTheDrawer = 0;
 
-    for (let i = cid.length - 1; i >= 0; i--) {
-      let coinValue = 0;
-      switch (cid[i][0]) {
-        case 'PENNY': coinValue = 0.01; break;
-        case 'NICKEL': coinValue = 0.05; break;
-        case 'DIME': coinValue = 0.10; break;
-        case 'QUARTER': coinValue = 0.25; break;
-        case 'ONE': coinValue = 1; break;
-        case 'FIVE': coinValue = 5; break;
-        case 'TEN': coinValue = 10; break;
-        case 'TWENTY': coinValue = 20; break;
-        case 'ONE HUNDRED': coinValue = 100; break;
-      }
+    let tempCid = JSON.parse(JSON.stringify(cid));
 
-      let count = Math.floor(change / coinValue);
-      let availableCoins = cid[i][1] / coinValue;
+    for (let i = tempCid.length - 1; i >= 0; i--) {
+        let coinValue = 0;
+        switch (tempCid[i][0]) {
+            case 'PENNY': coinValue = 0.01; break;
+            case 'NICKEL': coinValue = 0.05; break;
+            case 'DIME': coinValue = 0.10; break;
+            case 'QUARTER': coinValue = 0.25; break;
+            case 'ONE': coinValue = 1; break;
+            case 'FIVE': coinValue = 5; break;
+            case 'TEN': coinValue = 10; break;
+            case 'TWENTY': coinValue = 20; break;
+            case 'ONE HUNDRED': coinValue = 100; break;
+        }
 
-      sumTheDrawer = sumTheDrawer + cid[i][1]
+        let count = Math.floor(change / coinValue);
+        let availableCoins = tempCid[i][1] / coinValue;
 
-      if (count > availableCoins) {
-        count = availableCoins;
-      }
+        sumTheDrawer += tempCid[i][1];
 
-      if (count > 0) {
-        cashChange[i][1] = count * coinValue;
-        cid[i][1] -= cashChange[i][1];
-        change -= cashChange[i][1];
-        change = parseFloat(change.toFixed(2)); 
-        changeDetails.push(`${cid[i][0]}: $${(count * coinValue).toFixed(2)}`)
-      }
+        if (count > availableCoins) {
+            count = availableCoins;
+        }
+
+        if (count > 0) {
+            cashChange[i][1] = count * coinValue;
+            tempCid[i][1] -= cashChange[i][1];
+            change -= cashChange[i][1];
+            change = parseFloat(change.toFixed(2));
+            changeDetails.push(`${tempCid[i][0]}: $${(count * coinValue).toFixed(2)}`);
+        }
     }
 
     if (change > 0) {
-      status.textContent = statusArr[0];
-      changeDue.innerHTML = `<p>Insufficient funds to return change</p>`;
-      cid = [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]];
-      updateDrawer(cid);
-
-    } else if(initialChange == sumTheDrawer){
-      status.textContent = statusArr[1]; 
-      changeDetails.forEach(element => {
-        changeDue.innerHTML += `<p>${element}</p>`;
-      })
-    }else {
-      status.textContent = statusArr[2]; 
-      changeDetails.forEach(element => {
-        changeDue.innerHTML += `<p>${element}</p>`;
-      })
+        status.textContent = "INSUFFICIENT_FUNDS";
+        changeDue.innerHTML = `<p>Insufficient funds to return change</p>`;
+    } else {
+        cid = tempCid;
+        status.textContent = "SUCCESS";
+        changeDetails.forEach(element => {
+            changeDue.innerHTML += `<p>${element}</p>`;
+        });
     }
-    return sumTheDrawer;
-};
+  };
 
   updateDrawer(cid);
 
@@ -104,6 +97,7 @@ const giveChange = (change) => {
 
     if (isNaN(customerCash)) {
       alert("Please enter a valid amount.");
+      updateDrawer(cid);
       return;
     }
 
@@ -122,6 +116,8 @@ const giveChange = (change) => {
       status.textContent = statusArr[0];
       changeDue.innerHTML = '';
       alert("Customer does not have enough money to purchase the item");
+      updateDrawer(cid);
+      return
     }
   };
 
