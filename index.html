@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CASH REGISTER</title>
+    <link rel="stylesheet" href="styles.css"/>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <figure id="icon-circle">
+          <a href="https://github.com/sweetArizCider">
+            <img id="icon"
+            src="https://i.pinimg.com/736x/76/7a/4f/767a4fcb5a6f5ca144828e2db9155e05.jpg"
+            rel="Profile Icon"/>
+          </a>
+        </figure>
+        <h1 id="main-title">CASH REGISTER</h1>
+      </nav>
+    </header>
+
+    <main>
+      <section id="input-section">
+        <article id="input-article">
+          <h1>Total: <span class="yellow">$</span><span class="yellow" id="total">3.26<span></h1>
+          <label class="blue">Enter cash from customer</label>
+          <input type="number" id="cash"/>
+          <button id="purchase-btn">Purchase</button>
+        </article>
+        <article id="change-article">
+          <h1>Status: <span id="status" class="yellow">OPEN</span></h1>
+          <div id="change-due">
+          </div>
+        </article>
+      </section>
+      <section id="drawer-section">
+        <h1 class="blue">Change in drawer</h1>
+        <div id="drawer">
+        </div>
+      </section>
+    </main>
+    <script src='/src/script.js' type="module"></script>
+  </body>
+
+</html>
